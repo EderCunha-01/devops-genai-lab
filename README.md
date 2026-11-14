@@ -1,6 +1,6 @@
 # 🚀 Projeto Integrador: DevOps com GenAI (versão GitHub Actions + OpenAI)
 
-Especialização em Engenharia de Software: Automação e Inovação com Inteligência Artificial Generativa (AKCIT/UFG), Unidade 5.
+Especialização em Engenharia de Software: Automação e Inovação com Inteligência Artificial Generativa (AKCIT/UFG)
 
 Adaptação do laboratório original https://github.com/allysonbarros/devops-genai-lab, usando o **OpenAI** (camada gratuita) como motor de IA generativa.
 
