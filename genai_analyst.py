@@ -14,14 +14,15 @@ import re
 import sys
 
 import requests
-from groq import Groq
+from openai import OpenAI
+
 
 GITHUB_API = os.getenv("GITHUB_API_URL", "https://api.github.com")
 REPO = os.getenv("GITHUB_REPOSITORY")          # ex.: usuario/devops-genai-lab
 PR_NUMBER = os.getenv("PR_NUMBER")
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")       # token automático do workflow
-GROQ_KEY = os.getenv("GROQ_API_KEY")
-GROQ_MODEL = os.getenv("GROQ_MODEL") or "llama-3.3-70b-versatile"
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+OPENAI_MODEL = os.getenv("OPENAI_MODEL") or "gpt-4o-mini"
 
 MAX_LOG_CHARS = 4000
 MAX_DIFF_CHARS = 6000
@@ -90,13 +91,13 @@ def get_pr_diff():
 
 
 def analyze_with_ai(error_log, diff):
-    client = Groq(api_key=GROQ_KEY)
+    client = OpenAI(api_key=OPENAI_API_KEY)
     user_content = (
         "LOG DO ERRO (trecho final):\n```\n" + error_log + "\n```\n\n"
         "DIFF DO PULL REQUEST:\n```diff\n" + (diff or "(diff indisponível)") + "\n```"
     )
     response = client.chat.completions.create(
-        model=GROQ_MODEL,
+        model=OPENAI_MODEL,
         messages=[
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user", "content": user_content},
@@ -138,9 +139,9 @@ def write_step_summary(body):
 def main():
     log_path = sys.argv[1] if len(sys.argv) > 1 else "test_output.log"
 
-    if not GROQ_KEY:
-        print("❌ GROQ_API_KEY não configurada. Cadastre em Settings > Secrets and variables > Actions.")
-        return 1
+if not OPENAI_API_KEY:
+    print("❌ OPENAI_API_KEY não configurada. Cadastre em Settings > Secrets and variables > Actions.")
+    return 1
 
     print("🔍 Lendo log de falha...")
     log = read_log(log_path)
