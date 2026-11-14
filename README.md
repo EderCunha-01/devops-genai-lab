@@ -2,7 +2,7 @@
 
 Especialização em Engenharia de Software: Automação e Inovação com Inteligência Artificial Generativa (AKCIT/UFG), Unidade 5.
 
-Adaptação do laboratório original em GitLab ([tornis1/devops-genai-lab](https://gitlab.com/tornis1/devops-genai-lab)) para **GitHub Actions**, usando o **OpenAI** (camada gratuita) como motor de IA generativa.
+Adaptação do laboratório original https://github.com/allysonbarros/devops-genai-lab, usando o **OpenAI** (camada gratuita) como motor de IA generativa.
 
 ## 🎯 Objetivo
 Demonstrar a integração entre um pipeline de CI/CD e um agente de IA generativa que lê o log de uma falha, correlaciona com o diff do Pull Request e sugere a correção. A decisão de aplicar continua humana.
