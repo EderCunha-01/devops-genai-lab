@@ -19,7 +19,7 @@ def shipping():
     try:
         price = data.get('price')
         # Simulando um dado vindo de configuração externa como string
-        tax = "5.50" 
+        tax = 5.50
         
         total = calculate_shipping(price, tax)
         return jsonify({"total": total}), 200
