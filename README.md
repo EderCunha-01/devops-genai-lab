@@ -1,8 +1,8 @@
-# 🚀 Projeto Integrador: DevOps com GenAI (versão GitHub Actions + GroqCloud)
+# 🚀 Projeto Integrador: DevOps com GenAI (versão GitHub Actions + OpenAI)
 
 Especialização em Engenharia de Software: Automação e Inovação com Inteligência Artificial Generativa (AKCIT/UFG), Unidade 5.
 
-Adaptação do laboratório original em GitLab ([tornis1/devops-genai-lab](https://gitlab.com/tornis1/devops-genai-lab)) para **GitHub Actions**, usando o **GroqCloud** (camada gratuita) como motor de IA generativa.
+Adaptação do laboratório original em GitLab ([tornis1/devops-genai-lab](https://gitlab.com/tornis1/devops-genai-lab)) para **GitHub Actions**, usando o **OpenAI** (camada gratuita) como motor de IA generativa.
 
 ## 🎯 Objetivo
 Demonstrar a integração entre um pipeline de CI/CD e um agente de IA generativa que lê o log de uma falha, correlaciona com o diff do Pull Request e sugere a correção. A decisão de aplicar continua humana.
@@ -15,7 +15,7 @@ Demonstrar a integração entre um pipeline de CI/CD e um agente de IA generativ
 2. **Pipeline:** `.github/workflows/ci.yml` com dois jobs.
    * `unit_test` roda o pytest, salva a saída em `test_output.log` e publica como artefato.
    * `ai_debugger` só roda quando `unit_test` falha em um Pull Request (`if: failure()`).
-3. **Agente IA:** `genai_analyst.py` lê o log, busca o diff do PR pela API do GitHub, mascara segredos e consulta o LLM no GroqCloud.
+3. **Agente IA:** `genai_analyst.py` lê o log, busca o diff do PR pela API do GitHub, mascara segredos e consulta o LLM no OpenAI.
 4. **Feedback:** o diagnóstico é publicado como comentário no PR e no resumo da execução do workflow.
 
 | Original (GitLab) | Esta versão (GitHub) |
@@ -26,15 +26,15 @@ Demonstrar a integração entre um pipeline de CI/CD e um agente de IA generativ
 | `CI_JOB_TOKEN` | `GITHUB_TOKEN` com `pull-requests: write` |
 | Trace buscado pela API | Log passado como artefato entre jobs |
 | Merge Request | Pull Request |
-| OpenAI (`gpt-4o`, pago) | GroqCloud (`llama-3.3-70b-versatile`, camada gratuita) |
+| OpenAI (`gpt-4o`, pago) | OpenAI (`llama-3.3-70b-versatile`, camada gratuita) |
 
 ## 📋 Pré-requisitos
 
-1. Crie uma conta em [console.groq.com](https://console.groq.com) e gere uma chave em **API Keys** (começa com `gsk_`).
+1. Crie uma conta em [platform.openai.com](https://platform.openai.com) e gere uma chave em **API Keys** (começa com `OPENAI_`).
 2. No repositório do GitHub, vá em **Settings > Secrets and variables > Actions > New repository secret**.
-   * Name: `GROQ_API_KEY`
-   * Secret: sua chave do GroqCloud
-3. (Opcional) Na aba **Variables** do mesmo menu, crie `GROQ_MODEL` para trocar o modelo, por exemplo `openai/gpt-oss-120b`.
+   * Name: `OPENAI_API_KEY`
+   * Secret: sua chave do OpenAI
+3. (Opcional) Na aba **Variables** do mesmo menu, crie `OPENAI_MODEL` para trocar o modelo, por exemplo `openai/gpt-oss-120b`.
 
 Nunca coloque a chave no código. O `GITHUB_TOKEN` é criado automaticamente a cada execução.
 
@@ -53,7 +53,7 @@ Nunca coloque a chave no código. O `GITHUB_TOKEN` é criado automaticamente a c
 ```bash
 pip install -r requirements.txt
 pytest test_app.py -v 2>&1 | tee test_output.log
-export GROQ_API_KEY=gsk_...
+export OPENAI_API_KEY=gsk_...
 python genai_analyst.py test_output.log   # sem PR, imprime a análise no console
 ```
 
